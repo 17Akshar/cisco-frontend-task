@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: flex-start;
 }
-h1{
+.banner-main h1{
   font-size: 25px;
   color: rgb(218, 196, 218);
   padding: 20px;
