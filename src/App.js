@@ -1,8 +1,22 @@
 import { useState,useEffect } from 'react';
 import './App.css';
+import { w3cwebsocket as W3Cwebsocket } from 'websocket';
 import Banner from './Banner'
 import Exhibit from './Exhibit';
+const client = new W3Cwebsocket("ws://localhost:55455")
 function App() {
+  useEffect(()=>{
+    client.onopen = () =>{
+      console.log("CONNECTED TO SERVER")
+    }
+  },[])
+  const [time ,setTime] = useState(0)
+  client.onmessage = (request)=>{
+    var dt = new Date()
+    var current_time = dt.getMilliseconds()
+    const datafromserver = JSON.parse(request.data)
+    setTime((datafromserver-current_time)/1000)
+  }
   const [IP4,setIP4] = useState("none")
   const [IP6,setIP6] = useState("none")
   const getData = async() => {
@@ -26,7 +40,11 @@ function App() {
 }  
 {
   (IP6=="none")?<Exhibit name="Loading.." address="Loading"></Exhibit>:<Exhibit name="IPV6" address={IP6}></Exhibit>
-}        </div>
+}
+{
+  (time==0)?<Exhibit name="Loading.." address="Loading"></Exhibit>:<Exhibit name="LATENCY" address={time}></Exhibit>
+}         
+</div>
     </div>
     </>
   );
