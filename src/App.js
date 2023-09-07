@@ -13,9 +13,8 @@ function App() {
   const [time ,setTime] = useState(0)
   client.onmessage = (request)=>{
     var dt = new Date()
-    var current_time = dt.getMilliseconds()
     const datafromserver = JSON.parse(request.data)
-    setTime((datafromserver-current_time)/1000)
+    setTime((new Date().getTime()-datafromserver))
   }
   const [IP4,setIP4] = useState("none")
   const [IP6,setIP6] = useState("none")
